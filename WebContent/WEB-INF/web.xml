@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	id="WebApp_ID" version="3.1">
+	<display-name>CarrosWebServiceJersey</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+	
+	<!--  Habilita o Jersey -->
+	<servlet>
+		<servlet-name>Jersey REST service</servlet-name>
+		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>javax.ws.rs.Application</param-name>
+			<param-value>br.edu.ifsul.rest.ApplicationJersey</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Jersey REST service</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+			
+	<!-- Habilita o uso de Basic Authentication -->
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>Web Service Restrito</realm-name>
+	</login-config>
+	 
+	<!-- Delimita a área restrita. Isto é, configura o controle de acesso para um contexto inicial, pois é na
+		API que se fará o controle contextual individual (leia, no Jersey, através de anotações). -->
+	<security-constraint>
+		<display-name>Todos os usuários logados</display-name>
+		<web-resource-collection>
+			<web-resource-name>all</web-resource-name>
+			<url-pattern>/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>user</role-name>
+			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+	 
+	 <!-- O uso do código abaixo é opcional. Se você estiver utilizando o Jersey para gerenciar o controle de
+	 acesso não é necessário fazer esta configuração. Em outras palavras, se você habilitar o controle de acesso
+	 no Jersey não faça essa configuração -->
+
+	<!-- Controle de acesso pelo web.xml. Ao utilizar o Jersey para isso, ele fica deprecated. -->
+	<!--<security-constraint>
+		<display-name>User Autorization</display-name>
+		<web-resource-collection>
+			<web-resource-name>all</web-resource-name>
+			<url-pattern>/*</url-pattern>
+			<http-method>GET</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>user</role-name>
+			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+	<security-constraint>
+		<display-name>Admin Authorization</display-name>
+		<web-resource-collection>
+			<web-resource-name>all</web-resource-name>
+			<url-pattern>/*</url-pattern>
+			<http-method>POST</http-method>
+			<http-method>PUT</http-method>
+			<http-method>DELETE</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+	-->
+</web-app>
